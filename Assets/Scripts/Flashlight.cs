@@ -21,6 +21,14 @@ public class Flashlight : MonoBehaviour
     private bool _isOn = true;
     private AudioSource _audioSource;
 
+    [Header("Walk Sway")]
+    public float swayAmount = 0.8f;        // degrees of rotational sway
+    public float swayFrequency = 1.4f;     // match your bobFrequency for sync, offset slightly for realism
+    public Transform playerBody;            // assign the Player root (to read movement)
+
+    private CharacterController _playerCC;
+    private float _swayTimer;
+
     void Start()
     {
         if (cameraTransform == null && Camera.main != null)
@@ -29,26 +37,15 @@ public class Flashlight : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
         if (flashlightLight != null)
             baseIntensity = flashlightLight.intensity;
+        
+        if (playerBody != null)
+        _playerCC = playerBody.GetComponent<CharacterController>();
     }
 
     void Update()
     {
         HandleToggle();
-        HandleAim();
         if (enableSubtleFlicker && _isOn) HandleFlicker();
-    }
-
-    void HandleAim()
-    {
-        if (cameraTransform == null) return;
-
-        // smoothly match the camera's aim direction — slight lag feels like a held torch
-        Quaternion targetRot = cameraTransform.rotation;
-        transform.rotation = Quaternion.Slerp(
-            transform.rotation,
-            targetRot,
-            followSmoothing * Time.deltaTime
-        );
     }
 
     void HandleToggle()
@@ -72,5 +69,35 @@ public class Flashlight : MonoBehaviour
         // subtle organic flicker
         float flicker = Mathf.PerlinNoise(Time.time * 8f, 0f);
         flashlightLight.intensity = baseIntensity * Mathf.Lerp(0.92f, 1f, flicker);
+    }
+
+    void LateUpdate()
+    {
+        if (cameraTransform == null) return;
+
+        transform.position = cameraTransform.position + cameraTransform.TransformDirection(new Vector3(0f, 0f, 0.2f));
+
+        // base target: camera rotation
+        Quaternion targetRot = cameraTransform.rotation;
+
+        // add walking sway
+        bool isMoving = _playerCC != null && _playerCC.velocity.magnitude > 0.1f;
+        if (isMoving)
+        {
+            _swayTimer += Time.deltaTime * swayFrequency;
+            float swayX = Mathf.Sin(_swayTimer * Mathf.PI * 2f) * swayAmount;
+            float swayY = Mathf.Sin(_swayTimer * Mathf.PI) * swayAmount * 0.6f;
+            targetRot *= Quaternion.Euler(swayY, swayX, 0f);
+        }
+        else
+        {
+            _swayTimer = 0f;
+        }
+
+         transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRot,
+            followSmoothing * Time.deltaTime
+        );
     }
 }

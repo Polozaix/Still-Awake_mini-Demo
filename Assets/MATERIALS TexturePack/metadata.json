@@ -1,0 +1,47 @@
+{
+  "title": "MATERIALS Texture Pack (Free)",
+  "version": "1.0",
+  "author": "SM ART'S",
+  "description": "A free collection of 25 stylized MATERIALS-based tileable textures.",
+  "resolution": "all resolutions are 2048x2048",
+  "format": "all textures are in PNG format",
+
+  "textures": {
+    "1": "Leopard Fur",
+    "2": "Jungle Floor",
+    "3": "Muddy Ground",
+    "4": "Icy Surface",
+    "5": "Red Tribal Carpet",
+    "6": "Blue Bricks",
+    "7": "Cow Fur Pattern",
+    "8": "Dark Wooden Planks",
+    "9": "White Pebble Texture",
+    "10": "Wavy Sandstone",
+    "11": "Hex Metal",
+    "12": "Cracked Cardboard",
+    "13": "Silver Tiles",
+    "14": "Gold Cracks",
+    "15": "Layered Stone",
+    "16": "Rust and Bolts",
+    "17": "Old Newspapers",
+    "18": "Square Chocolate",
+    "19": "Chocolate Chip Cookie",
+    "20": "Industrial Metal Floor",
+    "21": "Bamboo Stalks",
+    "22": "Jungle Stones",
+    "23": "Tribal Wood",
+    "24": "Blue Stone",
+    "25": "Fortress Stones"
+  },
+
+  "tags": [
+    "stylized",
+    "MATERIALS",
+    "tileable",
+    "2048x2048",
+    "game textures",
+    "free pack"
+  ],
+
+  "license": "Royalty-Free"
+}
